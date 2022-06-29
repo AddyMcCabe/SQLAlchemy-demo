@@ -3,7 +3,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
-basedir = os.abspath(os.path.dirname(__file__))
+basedir = os.path.abspath(os.path.dirname(__file__))
 
 app= Flask(__name__)
 
@@ -14,7 +14,7 @@ db = SQLAlchemy(app)
 Migrate(app, db)
 
 
-class Viking(db.model):
+class Viking(db.Model):
 
     __tablename__ = 'vikings'
 
@@ -31,8 +31,8 @@ class Viking(db.model):
     def __init__(self, name):
         self.name = name
 
-    def __reprz__(self):
-        if self.owner:
+    def __repr__(self):
+        if self.pet:
             return f"Owners name is {self.name} and the pet is {self.pet.name}"
         else:
             return f"Vikings name is {self.name} and has no pet yet."
@@ -42,7 +42,7 @@ class Viking(db.model):
         for weapon in self.weapons:
             print(weapon.item_name)
 
-class Weapons(db.model):
+class Weapon(db.Model):
     __tablename__ = 'weapons'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -53,12 +53,12 @@ class Weapons(db.model):
         self.item_name = item_name
         self.viking_id = viking_id
 
-class Pet(db.model):
+class Pet(db.Model):
     __tablename__ = 'pets'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text)
-    viking_id = db.Column.(db.Integer, db.ForiegnKey('vikings.id'))
+    viking_id = db.Column(db.Integer, db.ForeignKey('vikings.id'))
 
     def __init__(self, name, viking_id):
         self.name = name
